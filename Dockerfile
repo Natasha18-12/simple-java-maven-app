@@ -1,11 +1,13 @@
 # Stage 1: Use JDK 24 base and install Maven manually
 FROM eclipse-temurin:24-jdk AS build
 
-# Install Maven
 ARG MAVEN_VERSION=3.9.6
-RUN apt-get update && apt-get install -y curl unzip && \
-    curl -fsSL https://downloads.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.zip -o maven.zip && \
-    unzip maven.zip -d /opt && \
+
+# Install Maven and dependencies securely
+RUN apt-get update && \
+    apt-get install -y curl unzip && \
+    curl -fsSL https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.zip -o /tmp/maven.zip && \
+    unzip /tmp/maven.zip -d /opt && \
     ln -s /opt/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/bin/mvn
 
 # Set working directory
