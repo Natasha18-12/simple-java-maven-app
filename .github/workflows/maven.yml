@@ -65,4 +65,6 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: natasha18/my-java-app:${{ github.sha }}
+        tags: |
+          natasha18/my-java-app:latest
+          natasha18/my-java-app:${{ github.sha }}
