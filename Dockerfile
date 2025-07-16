@@ -1,5 +1,5 @@
-# Use official Maven image to build the application
-FROM maven:3.9.6-eclipse-temurin-24 AS build
+# Stage 1: Build the application using Maven with JDK 17 (official & stable)
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
 # Set working directory
 WORKDIR /app
@@ -8,16 +8,16 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 
-# Build the application
+# Build the application (skip tests during build stage)
 RUN mvn clean package -DskipTests
 
-# Use a smaller runtime image
+# Stage 2: Use JDK 24 for running the application
 FROM eclipse-temurin:24-jdk
 
 # Set working directory
 WORKDIR /app
 
-# Copy the built jar from previous stage
+# Copy the built jar from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
 # Run the application
