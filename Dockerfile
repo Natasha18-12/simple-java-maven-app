@@ -1,5 +1,12 @@
-# Stage 1: Build the application using Maven 3.9.9 with JDK 21
-FROM maven:3.9.9-eclipse-temurin-21 AS build
+# Stage 1: Use JDK 24 base and install Maven manually
+FROM eclipse-temurin:24-jdk AS build
+
+# Install Maven
+ARG MAVEN_VERSION=3.9.6
+RUN apt-get update && apt-get install -y curl unzip && \
+    curl -fsSL https://downloads.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.zip -o maven.zip && \
+    unzip maven.zip -d /opt && \
+    ln -s /opt/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/bin/mvn
 
 # Set working directory
 WORKDIR /app
@@ -8,17 +15,11 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 
-# Build the application (skip tests during build stage)
+# Compile the project using JDK 24 and installed Maven
 RUN mvn clean package -DskipTests
 
-# Stage 2: Use Eclipse Temurin JDK 21+ to run the application
-FROM eclipse-temurin:21-jdk
-
-# Set working directory
+# Stage 2: Run the app using JDK 24
+FROM eclipse-temurin:24-jdk
 WORKDIR /app
-
-# Copy the built jar from the build stage
 COPY --from=build /app/target/*.jar app.jar
-
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
