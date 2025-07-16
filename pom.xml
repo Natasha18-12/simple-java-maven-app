@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  
+
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.mycompany.app</groupId>
@@ -38,7 +38,7 @@
         </configuration>
       </plugin>
 
-      <!-- Executable JAR setup -->
+      <!-- Executable JAR -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -46,15 +46,13 @@
         <configuration>
           <archive>
             <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>lib/</classpathPrefix>
               <mainClass>com.mycompany.app.App</mainClass>
             </manifest>
           </archive>
         </configuration>
       </plugin>
 
-      <!-- Enforce Java & Maven version -->
+      <!-- Enforce versions -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -68,10 +66,10 @@
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>[3.9.9,)</version>
+                  <version>[3.9.0,)</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>[21,)</version>
+                  <version>[24,)</version>
                 </requireJavaVersion>
               </rules>
             </configuration>
