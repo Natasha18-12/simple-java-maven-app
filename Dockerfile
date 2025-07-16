@@ -1,5 +1,5 @@
-# Stage 1: Build the application using Maven with JDK 17 (official & stable)
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Stage 1: Build the application using Maven 3.9.9 with JDK 21
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 # Set working directory
 WORKDIR /app
@@ -11,8 +11,8 @@ COPY src ./src
 # Build the application (skip tests during build stage)
 RUN mvn clean package -DskipTests
 
-# Stage 2: Use JDK 24 for running the application
-FROM eclipse-temurin:24-jdk
+# Stage 2: Use Eclipse Temurin JDK 21+ to run the application
+FROM eclipse-temurin:21-jdk
 
 # Set working directory
 WORKDIR /app
